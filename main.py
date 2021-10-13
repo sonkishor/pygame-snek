@@ -18,13 +18,13 @@ black = (0, 0, 0)
 red = (255, 0, 0)
 orange = (255, 165, 0)
 
-game_display = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Snek")
+game_display = pygame.display.set_mode((width, height)) #create window
+pygame.display.set_caption("Snek")  #add window title
 
 clock = pygame.time.Clock()
 
-snake_size = 10
-snake_speed = 15
+snake_size = 10  #size of each block in pixels
+snake_speed = 15 #speed in pixels
 
 message_font = pygame.font.SysFont('ubuntu', 30)
 score_font = pygame.font.SysFont('ubuntu', 25)
@@ -35,7 +35,7 @@ def print_score(score):
     
 def draw_snake(snake_size, snake_pixels):
     for pixel in snake_pixels:
-        pygame.draw.rect(game_display, white, [pixel[0], pixel[1], snake_size, snake_size])
+        pygame.draw.rect(game_display, white, [pixel[0], pixel[1], snake_size, snake_size]) #rect(x,y,width,height)
     
 def run_game():    
     gameOver = False
@@ -50,19 +50,19 @@ def run_game():
     snakePixels = []
     snakeLength = 1;
     
-    foodX = round (random.randrange(0,width) / 10) * 10
-    foodY = round (random.randrange(0,height) / 10) * 10
+    foodX = round (random.randrange(0,width) / 10) * 10 #random x coordinate for food
+    foodY = round (random.randrange(0,height) / 10) * 10 #random y coordinate for y
     
     while not gameOver:
         while gameClose:
-            game_display.fill(black)
-            gameOvermessage = message_font.render("GameOver", True, red)
+            game_display.fill(black) # black background
+            gameOvermessage = message_font.render("GameOver", True, red) 
             replayMessage = message_font.render("R to Replay, Q to Exit", True, orange)
             
-            game_display.blit(gameOvermessage, [width/3, height/3])
-            game_display.blit(replayMessage, [width/3, height/2])
+            game_display.blit(gameOvermessage, [width/3, height/3])  # BLIT = send image in buffer
+            game_display.blit(replayMessage, [width/3, height/2])  
             print_score(snakeLength-1)
-            display.update()
+            display.update()  # update finalizes the blits
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -102,31 +102,31 @@ def run_game():
         
         game_display.fill(black)
         
-        pygame.draw.rect(game_display, orange, [foodX,foodY, snake_size, snake_size])
+        pygame.draw.rect(game_display, orange, [foodX,foodY, snake_size, snake_size])  # food draw
         
-        snakePixels.append([x,y])
+        snakePixels.append([x,y]) # new pixel data for snake 
         
         if len(snakePixels) > snakeLength:
-            del snakePixels[0]
+            del snakePixels[0]  # to avoid the length of snake getting too large we need to delete the old tails
         
-        for pixel in snakePixels[:-1]:
+        for pixel in snakePixels[:-1]:  # if head of the snake touches any other body, then quit
             if pixel == [x,y]:
                 gameClose = True
         
-        draw_snake(snake_size, snakePixels)
+        draw_snake(snake_size, snakePixels)  
         print_score(snakeLength-1)
         
         pygame.display.update()
         
         if x == foodX and y == foodY:
-            foodX = round (random.randrange(0,width) / 10) * 10
+            foodX = round (random.randrange(0,width) / 10) * 10  #food collision detetction
             foodY = round (random.randrange(0,height) / 10) * 10
-            snakeLength += 1
+            snakeLength += 1 # if head == food, increase the length
         
         clock.tick(snake_speed)
     
     pygame.quit()
     quit()
     
-run_game()
+run_game() # run the game
 
